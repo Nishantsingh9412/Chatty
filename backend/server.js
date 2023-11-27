@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'     // for non blocking requests 
 import dotenv from 'dotenv'
 import { chats } from './data/data.js'
+import ConnectDB from './config/db.js'
 
 
 const app = express();
@@ -9,6 +10,7 @@ const app = express();
 app.use(cors());
 
 dotenv.config('env');
+ConnectDB();
 
 app.get('/',(req,res) => {
     res.send("on 5000 port ")

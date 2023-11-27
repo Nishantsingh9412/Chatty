@@ -1,12 +1,43 @@
+import { Box, Container, Text,Tabs,TabList,Tab,TabPanel,TabPanels  } from '@chakra-ui/react'
 import React from 'react'
+
+import Login from '../components/Authentication/Login'
+import SignUp from '../components/Authentication/SignUp'
 
 const HomePage = () => {
   return (
-    <div>
-        <h2>
-            HomePage
-        </h2>
-    </div>
+    <Container maxW='xl' align={'center'}  >
+      <Box
+        d='flex'
+        justifyContent='center'
+        p={3}
+        bg={"white"}
+        w="100%"
+        m="40px 0 15px 0"
+        borderRadius={"lg"}
+        borderWidth={"1px"}
+      >
+
+        <Text fontSize='4xl' fontFamily='Work sans' color='black'> Chatty </Text>
+      </Box>
+      <Box bg={'white'} w={'100%'} p={4} borderRadius='lg' color='black' borderWidth={'1px'}   >
+        
+        <Tabs variant='soft-rounded' colorScheme='teal'   >
+          <TabList mb={'1em'}>
+            <Tab width={'50%'}>Login</Tab>
+            <Tab width={'50%'} >SignUp</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <Login />
+            </TabPanel>
+            <TabPanel>
+              <SignUp />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </Box>
+    </Container>
   )
 }
 
