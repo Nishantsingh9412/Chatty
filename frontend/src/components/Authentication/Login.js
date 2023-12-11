@@ -10,7 +10,7 @@ const Login = () => {
   const [loading, setloading] = useState(false)
   const navigate = useNavigate();
 
-  const toast = useToast(); 
+  const toast = useToast();
 
   // function for submission of image
 

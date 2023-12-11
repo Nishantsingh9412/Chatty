@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import { chats } from './data/data.js'
 import ConnectDB from './config/db.js'
 import userRoutes from './Routes/UserRoutes.js'
+import chatRoutes from './Routes/chatRoutes.js'
 
 import {notFound , errorHandler} from './Middleware/errorMiddleware.js'
 
@@ -23,6 +24,7 @@ app.get('/',(req,res) => {
 })
 
 app.use('/api/user',userRoutes)
+app.use('/api/chat',chatRoutes)
 
                 // -------- ------ Error Handling ----------------------------
 app.use(notFound)

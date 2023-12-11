@@ -1,9 +1,7 @@
-import asyncHandler from 'express-async-handler';
-
-import User from '../Models/UserModel.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
+import User from '../Models/UserModel.js';
 
 export const registerUser = async (req, res) => {
     try {
@@ -20,7 +18,7 @@ export const registerUser = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 12);
-        const user = await User.create({ name, email, password:hashedPassword, pic });
+        const user = await User.create({ name, email, password: hashedPassword, pic });
 
         const jwtoken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" })
 
@@ -35,25 +33,47 @@ export const registerUser = async (req, res) => {
 
 };
 
-export const loginUser = async (req,res) => {
-    try{
-        const {email,password}  = req.body;
-        const existingUser = await User.findOne({email});
-        if(!existingUser){
-            return res.status(400).json({message:"User does not exist"})
+export const loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const existingUser = await User.findOne({ email });
+        if (!existingUser) {
+            return res.status(400).json({ message: "User does not exist" })
         }
 
-        const isPasswordCorrect = await bcrypt.compare(password,existingUser.password);
-        
-        if(!isPasswordCorrect){
-            return res.status(400).json({message:"Invalid Credentials"})
-        }
-        
-        const token = jwt.sign({_id:existingUser._id} ,process.env.JWT_SECRET,{expiresIn:'7d'});
-        res.status(200).json({result : existingUser , token})
+        const isPasswordCorrect = await bcrypt.compare(password, existingUser.password);
 
-    }catch(error){
-        res.status(400).json({message:error.message})
+        if (!isPasswordCorrect) {
+            return res.status(400).json({ message: "Invalid Credentials" })
+        }
+
+        const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        res.status(200).json({ result: existingUser, token })
+
+    } catch (error) {
+        res.status(400).json({ message: error.message })
     }
 }
+
+// api/user/        --------- Main api 
+// api/user?search=userName   --------- Login api
+
+
+export const allUsers = async (req, res) => {
+    try {
+        const keyword = req.query.search
+            ? {
+                $or: [
+                    { name: { $regex: req.query.search, $options: "i" } },
+                    { email: { $regex: req.query.search, $options: "i" } },
+                ],
+            }
+            : {};
+
+        const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+        res.send(users);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
 
