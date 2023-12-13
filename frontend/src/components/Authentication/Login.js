@@ -47,7 +47,7 @@ const Login = () => {
 
         localStorage.setItem("userInfo", JSON.stringify(data));
         setloading(false);
-        navigate('/chat');
+        navigate('/chats');
     }catch(err){
         toast({
             title: "Invalid Credentials",
