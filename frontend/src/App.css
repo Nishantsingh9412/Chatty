@@ -5,3 +5,18 @@
   display: flex;
   /* background-image: url(); */
 }
+
+
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(136, 136, 136, 0.281);
+}
+
+
+  /* Hover pr handle krenge toh ye color aayega */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

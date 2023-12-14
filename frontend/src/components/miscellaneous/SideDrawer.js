@@ -1,4 +1,4 @@
-import { Box, Button,ListItem, Tooltip, useStatStyles, Text, Menu, MenuButton, Avatar, MenuList, MenuItem, MenuDivider, useDisclosure, Drawer, DrawerOverlay, DrawerContent, DrawerHeader, DrawerBody, Input, Toast, useToast } from '@chakra-ui/react';
+import { Box, Button,ListItem, Tooltip, useStatStyles, Text, Menu, MenuButton, Avatar, MenuList, MenuItem, MenuDivider, useDisclosure, Drawer, DrawerOverlay, DrawerContent, DrawerHeader, DrawerBody, Input, Toast, useToast, Spinner } from '@chakra-ui/react';
 import { BellIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +15,8 @@ const SideDrawer = () => {
     const [loading, setLoading] = useState(false);
     const [loadingChat, setLoadingChat] = useState();
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const { user } = ChatState();
+
+    const { user , selectedChat, setSelectedChat , chats,setChats } = ChatState();
 
     const navigate = useNavigate();
     const toast = useToast();
@@ -63,7 +64,37 @@ const SideDrawer = () => {
         navigate("/");
     }
 
-    const accessChat = (userId) => {
+    const accessChat = async(userId) => {
+        try {
+            setLoadingChat(true);
+            const config = {
+                headers:{
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${user.token}`,
+                },
+            };
+
+            const {data} = await axios.post("/api/chat", {userId}, config);
+
+            if(!chats.find((c) => c._id === data._id)){
+                setChats ([data,...chats]);
+            }
+
+            setSelectedChat(data);
+            setLoadingChat(false);
+            onClose();
+
+        } catch (error) {
+            console.log(error.message);
+            toast({
+                title: "Something went wrong",
+                description:'failed to load the chat',
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom-left",
+            })
+        }
         console.log(userId);
     }
 
@@ -144,6 +175,8 @@ const SideDrawer = () => {
                                 ))  
                             )
                         }
+
+                        {loadingChat && <Spinner ml={'auto'} display={'flex'} />}
                     </DrawerBody>
                 </DrawerContent>
 
