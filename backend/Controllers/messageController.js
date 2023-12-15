@@ -15,7 +15,6 @@ export const sendMessage = async(req,res) => {
         content:content,
         chat: chatId,
     }
-    console.log(newMessage)
     try{
         var message = await Message.create(newMessage);
         message = await message.populate("sender","name pic");
