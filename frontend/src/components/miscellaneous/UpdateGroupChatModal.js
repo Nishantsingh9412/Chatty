@@ -23,7 +23,7 @@ import UserBadgeItem from '../UserAvatar/UserBadgeItem';
 import axios from 'axios';
 import UserListItem from '../UserAvatar/UserListItem';
 
-const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
+const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain , fetchMessages}) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [groupChatName, setGroupChatName] = useState();
@@ -35,7 +35,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
     const toast = useToast();
     // const { user , selectedChat, setSelectedChat , chats,setChats } = ChatState();
     const { user, selectedChat, setSelectedChat } = ChatState();
-    console.log(user);
+    // console.log(user);
 
     const handleAddUser = async(user1) => {
         console.log(user?.result);
@@ -76,6 +76,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
 
             setSelectedChat(data);
             setFetchAgain(!fetchAgain);
+            fetchMessages();
             setLoading(false)
         } catch (error) {
             toast({
