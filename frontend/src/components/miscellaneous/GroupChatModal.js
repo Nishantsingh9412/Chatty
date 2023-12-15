@@ -34,6 +34,7 @@ const GroupChatModal = ({ children }) => {
     const toast = useToast();
 
     const { user, chats, setChats } = ChatState();
+    
 
     const handleSearch = async (query) => {
         setSearch(query);
@@ -151,7 +152,7 @@ const GroupChatModal = ({ children }) => {
                         </FormControl>
                         <FormControl>
                             <Input
-                                placeholder='Add Users eg:Singh,Sharma'
+                                placeholder='Add Users eg:Aarav,Aditya'
                                 mb={1}
                                 onChange={(e) => handleSearch(e.target.value)}
                             >

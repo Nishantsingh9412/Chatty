@@ -141,7 +141,7 @@ export const addToGroup = async (req, res) => {
         if (!added) {
             res.status(400).json({ message: " Chat not found " })
         } else {
-            res.status(200).json({ result: added });
+            res.status(200).json(added);
         }
     } catch (error) {
         res.status(400).json({ message: error.message })
@@ -163,7 +163,7 @@ export const removeFromGroup = async (req, res) => {
         if (!removed) {
             res.status(400).json({ message: " Chat not found " })
         } else {
-            res.status(200).json({ result: removed });
+            res.status(200).json(removed);
         }
     } catch (error) {
         res.status(400).json({ message: error.message })
