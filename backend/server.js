@@ -5,6 +5,7 @@ import { chats } from './data/data.js'
 import ConnectDB from './config/db.js'
 import userRoutes from './Routes/UserRoutes.js'
 import chatRoutes from './Routes/chatRoutes.js'
+import messageRoutes from './Routes/messageRoutes.js'
 
 import {notFound , errorHandler} from './Middleware/errorMiddleware.js'
 
@@ -25,6 +26,7 @@ app.get('/',(req,res) => {
 
 app.use('/api/user',userRoutes)
 app.use('/api/chat',chatRoutes)
+app.use('/api/messages',messageRoutes)
 
                 // -------- ------ Error Handling ----------------------------
 app.use(notFound)
