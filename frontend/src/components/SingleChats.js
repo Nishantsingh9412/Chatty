@@ -30,7 +30,7 @@ var socket,selectedChatCompare;
 
 
 const SingleChats = ({ fetchAgain, setFetchAgain }) => {
-    const { user, selectedChat, setSelectedChat } = ChatState();
+    const { user, selectedChat, setSelectedChat,notification,setNotification  } = ChatState();
 
     const [message, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -107,6 +107,10 @@ const SingleChats = ({ fetchAgain, setFetchAgain }) => {
             if(!selectedChatCompare || selectedChatCompare._id !== newMessageRecieved.chat._id){
                 // give notifi
                 // return console.log('selectedChatCompare or newMessageRecieved.chat._id not defined');
+                if(!notification.includes(newMessageRecieved)){
+                    setNotification([newMessageRecieved,...notification])
+                    setFetchAgain(!fetchAgain);
+                }
             }else{
                 setMessages([...message, newMessageRecieved]);
             }

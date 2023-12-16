@@ -5,6 +5,7 @@ import React from 'react'
 const ProfileModal = ({user,children}) => {
     
     const { isOpen, onOpen, onClose } = useDisclosure();
+    
 
     // console.log(user);
 
@@ -43,8 +44,8 @@ const ProfileModal = ({user,children}) => {
                 <Image 
                     borderRadius='full'
                     boxSize='150px'
-                    src={user?.pic}
-                    alt={user?.name}
+                    src={user?.result?.pic}
+                    alt={user?.result?.name}
                 > 
                 </Image>
 
@@ -52,7 +53,7 @@ const ProfileModal = ({user,children}) => {
                     fontSize={{base:"28px",md:"30px"}}
                     fontFamily='Work sans'
                 >
-                    Email : {user?.email}
+                    Email : {user?.result?.email}
                 </Text>
           </ModalBody>
 

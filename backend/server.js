@@ -92,5 +92,5 @@ io.on('connection', (socket) => {
     socket.off('setup',() => {
         console.log('disconnected from socket.io')
         socket.leave(userData._id)
-    })
+    })  
 })
