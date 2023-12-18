@@ -16,7 +16,7 @@ const app = express();
 
 app.use(cors());
 // const __dirname1 = path.resolve();
-// const x = path.join(__dirname1, "../frontend/build")
+// const x = path.join(__dirname1, "./frontend/build")
 // console.log(x)
 
 // for parsing the data or To accept Json data in server
