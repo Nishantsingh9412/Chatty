@@ -23,7 +23,9 @@ export const registerUser = async (req, res) => {
         const jwtoken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" })
 
         if (user) {
-            res.status(201).json({ _id: user._id, name: user.name, email: user.email, pic: user.pic, token: jwtoken })
+            const existingUser = { _id: user._id, name: user.name, email: user.email, pic: user.pic }
+            res.status(201).json({ existingUser, token:jwtoken })
+            // res.status(201).json({ _id: user._id, name: user.name, email: user.email, pic: user.pic, token: jwtoken })
         } else {
             res.status(400).json({ message: "Failed to Create User" })
         }
@@ -48,7 +50,7 @@ export const loginUser = async (req, res) => {
         }
 
         const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
-        res.status(200).json({ result: existingUser, token })
+        res.status(200).json({  existingUser, token })
 
     } catch (error) {
         res.status(400).json({ message: error.message })

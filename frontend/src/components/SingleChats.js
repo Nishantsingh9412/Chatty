@@ -30,7 +30,7 @@ var socket,selectedChatCompare;
 
 
 const SingleChats = ({ fetchAgain, setFetchAgain }) => {
-    const { user, selectedChat, setSelectedChat,notification,setNotification  } = ChatState();
+    const { user, userToken, selectedChat, setSelectedChat,notification,setNotification  } = ChatState();
 
     const [message, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -60,7 +60,7 @@ const SingleChats = ({ fetchAgain, setFetchAgain }) => {
 
     useEffect(() => {
             socket = io(ENDPOINT);
-            socket.emit('setup', user?.result);
+            socket.emit('setup', user);
             socket.on('connected',() =>  setSocketConnected(true))  
             socket.on('typing',() =>  setIsTyping(true))      
             socket.on('stop typing',() =>  setIsTyping(false))
@@ -75,7 +75,7 @@ const SingleChats = ({ fetchAgain, setFetchAgain }) => {
         try {
             const config = {
                 headers: {
-                    Authorization: `Bearer ${user.token}`,
+                    Authorization: `Bearer ${userToken}`,
                 },
             };
 
@@ -124,7 +124,7 @@ const SingleChats = ({ fetchAgain, setFetchAgain }) => {
                 const config = {
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${user.token}`,
+                        Authorization: `Bearer ${userToken}`,
                     },
                 }
 
@@ -195,8 +195,9 @@ const SingleChats = ({ fetchAgain, setFetchAgain }) => {
                         />
                         {!selectedChat.isGroupChat ? (
                             <>
-                                {getSender(user?.result, selectedChat.users)}
-                                <ProfileModal user={getSenderFull(user?.result, selectedChat.users)} />
+                                {/* {console.log(198,user)} */}
+                                {getSender(user, selectedChat.users)}
+                                <ProfileModal user={getSenderFull(user, selectedChat.users)} />
                             </>
                         ) : (
                             <> {selectedChat.chatName.toUpperCase()}

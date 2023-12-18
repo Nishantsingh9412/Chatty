@@ -9,11 +9,15 @@ import messageRoutes from './Routes/messageRoutes.js'
 import { Server } from 'socket.io';
 
 import {notFound , errorHandler} from './Middleware/errorMiddleware.js'
-
+// const path = require('path');
+import path from 'path'
 
 const app = express();
 
 app.use(cors());
+// const __dirname1 = path.resolve();
+// const x = path.join(__dirname1, "../frontend/build")
+// console.log(x)
 
 // for parsing the data or To accept Json data in server
 app.use(express.json())
@@ -21,13 +25,34 @@ app.use(express.json())
 dotenv.config('env');
 ConnectDB();
 
-app.get('/',(req,res) => {
-    res.send("on 5000 port ")
-})
+
 
 app.use('/api/user',userRoutes)
 app.use('/api/chat',chatRoutes)
 app.use('/api/messages',messageRoutes)
+
+// ----------------------------deployment--------------------------------------
+
+//     // console.log(__dirname1)
+const __dirname1 = path.resolve();
+
+
+if(process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname1, "../frontend/build")));
+
+    app.get('*', (req,res) => {
+        res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"));
+    });
+} else {
+    app.get('/',(req,res) => {
+    res.send("on 5000 port ")
+})
+}
+
+// ----------------------------deployment--------------------------------------
+
+
+
 
                 // -------- ------ Error Handling ----------------------------
 app.use(notFound)
@@ -57,7 +82,7 @@ io.on('connection', (socket) => {
     console.log('connected to socket.io')
 
     socket.on('setup',(userData) => {
-        socket.join(userData._id)
+        socket.join(userData?._id)
         // console.log('user joined : ',userData._id)
         socket.emit('connected');
     })
@@ -82,15 +107,15 @@ io.on('connection', (socket) => {
             return console.log('chat.users not defined');
         
         chat.users.forEach(user => {
-            if(user._id == newMessageRecieved.sender._id)
+            if(user?._id == newMessageRecieved.sender?._id)
                 return;
-            socket.in(user._id).emit('message recieved',newMessageRecieved)
+            socket.in(user?._id).emit('message recieved',newMessageRecieved)
         })
 
     })
 
     socket.off('setup',() => {
         console.log('disconnected from socket.io')
-        socket.leave(userData._id)
+        socket.leave(userData?._id)
     })  
 })

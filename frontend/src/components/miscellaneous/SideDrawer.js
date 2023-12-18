@@ -19,7 +19,7 @@ const SideDrawer = () => {
     const [loadingChat, setLoadingChat] = useState();
     const { isOpen, onOpen, onClose } = useDisclosure()
 
-    const { user , selectedChat, setSelectedChat , chats,setChats,notification,setNotification  } = ChatState();
+    const { user ,userToken, selectedChat, setSelectedChat , chats,setChats,notification,setNotification  } = ChatState();
 
     const navigate = useNavigate();
     const toast = useToast();
@@ -40,7 +40,7 @@ const SideDrawer = () => {
             setLoading(true);
             const config = {
                 headers:{
-                    Authorization: `Bearer ${user.token}`,
+                    Authorization: `Bearer ${userToken}`,
                 },
             };
 
@@ -73,7 +73,7 @@ const SideDrawer = () => {
             const config = {
                 headers:{
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${user.token}`,
+                    Authorization: `Bearer ${userToken}`,
                 },
             };
 
@@ -148,7 +148,7 @@ const SideDrawer = () => {
                                     {notification?.chat?.isGroupChat 
                                     ? (`New Message in ${n?.chat?.chatName}`) : 
                                     (
-                                        `New Message from ${getSender(user?.result,n?.chat?.users)} `
+                                        `New Message from ${getSender(user,n?.chat?.users)} `
                                     )}
                                 </MenuItem >
 

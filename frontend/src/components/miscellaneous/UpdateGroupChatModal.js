@@ -34,11 +34,11 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain , fetchMessages}) => {
 
     const toast = useToast();
     // const { user , selectedChat, setSelectedChat , chats,setChats } = ChatState();
-    const { user, selectedChat, setSelectedChat } = ChatState();
+    const { user, userToken,  selectedChat, setSelectedChat } = ChatState();
     // console.log(user);
 
     const handleAddUser = async(user1) => {
-        console.log(user?.result);
+        console.log(user);
         if(selectedChat.users.find((u) => u._id === user1._id)){
             toast({
                 title: "User already in the group",
@@ -50,7 +50,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain , fetchMessages}) => {
             return;
         }
         // console.log(selectedChat.groupAdmin._id , user.result._id)
-        if(selectedChat.groupAdmin._id !== user.result?._id){
+        if(selectedChat.groupAdmin._id !== user._id){
             toast({
                 title: "Only Admins can add someone",
                 status: "error",
@@ -65,7 +65,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain , fetchMessages}) => {
             setLoading(true);
             const config = {
                 headers: {
-                    Authorization: `Bearer ${user.token}`,
+                    Authorization: `Bearer ${userToken}`,
                 },
             };
 
@@ -92,7 +92,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain , fetchMessages}) => {
     
     const handleRemove = async(user1) => {
         
-        if(selectedChat.groupAdmin._id !== user?.result?._id  && user1._id !== user?.result?._id){
+        if(selectedChat.groupAdmin._id !== user?._id  && user1._id !== user?._id){
             toast({
                 title: "Only Admins can remove someone",
                 status: "error",
@@ -107,7 +107,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain , fetchMessages}) => {
             setLoading(true);
             const config = {
                 headers: {
-                    Authorization: `Bearer ${user.token}`,
+                    Authorization: `Bearer ${userToken}`,
                 },
             };
 
@@ -116,7 +116,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain , fetchMessages}) => {
                 userId: user1._id,
             },config);
 
-            user1._id === user?.result?._id ? setSelectedChat() : setSelectedChat(data) ;
+            user1._id === user?._id ? setSelectedChat() : setSelectedChat(data) ;
             setFetchAgain(!fetchAgain);
             setLoading(false)
 
@@ -140,7 +140,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain , fetchMessages}) => {
 
             const config = {
                 headers:{
-                    Authorization: `Bearer ${user.token}`,
+                    Authorization: `Bearer ${userToken}`,
                 },
             };
 
@@ -174,7 +174,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain , fetchMessages}) => {
             setLoading(true);
             const config = {
                 headers: {
-                    Authorization: `Bearer ${user.token}`,
+                    Authorization: `Bearer ${userToken}`,
                 }
             }
             const { data } = await axios.get(`/api/user?search=${query}`, config);

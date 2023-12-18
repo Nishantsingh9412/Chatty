@@ -1,12 +1,12 @@
 import { ViewIcon } from '@chakra-ui/icons';
 import { IconButton,Image,Text,useDisclosure,Modal,ModalHeader,ModalContent,ModalOverlay,Button,ModalCloseButton,ModalBody,ModalFooter } from '@chakra-ui/react';
 import React from 'react'
+import { ChatState } from '../../Context/ChatProvider';
 
 const ProfileModal = ({user,children}) => {
     
     const { isOpen, onOpen, onClose } = useDisclosure();
-    
-
+    // const { user } = ChatState();
     // console.log(user);
 
 
@@ -33,7 +33,7 @@ const ProfileModal = ({user,children}) => {
             fontFamily='Work sans'
             display='flex'
             justifyContent='center'
-          > {user?.result?.name}</ModalHeader>
+          > {user?.name}</ModalHeader>
           <ModalCloseButton />
           <ModalBody 
             display='flex'
@@ -44,8 +44,8 @@ const ProfileModal = ({user,children}) => {
                 <Image 
                     borderRadius='full'
                     boxSize='150px'
-                    src={user?.result?.pic}
-                    alt={user?.result?.name}
+                    src={user?.pic}
+                    alt={user?.name}
                 > 
                 </Image>
 
@@ -53,7 +53,7 @@ const ProfileModal = ({user,children}) => {
                     fontSize={{base:"28px",md:"30px"}}
                     fontFamily='Work sans'
                 >
-                    Email : {user?.result?.email}
+                    Email : {user?.email}
                 </Text>
           </ModalBody>
 

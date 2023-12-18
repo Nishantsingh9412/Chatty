@@ -11,7 +11,7 @@ import GroupChatModal from './miscellaneous/GroupChatModal';
 const Mychats = ({fetchAgain}) => {
 
   const [loggedUser, setLoggedUser] = useState();
-  const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
+  const { userToken , selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
 
   const toast = useToast();
 
@@ -20,13 +20,15 @@ const Mychats = ({fetchAgain}) => {
     try {
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${userToken}`,
         },
       };
 
       const { data } = await axios.get("/api/chat", config);
+      console.log(data);
       setChats(data);
     } catch (error) {
+      console.log(error)
       toast({
         title: "Error Occured!",
         description: "Failed to Load the chats",
@@ -100,8 +102,9 @@ const Mychats = ({fetchAgain}) => {
                 key={chat._id}
               >
                 <Text>
+                  { console.log(103,loggedUser) } 
                   {!chat.isGroupChat
-                    ? getSender(loggedUser?.result, chat.users)
+                    ? getSender(loggedUser, chat.users)
                     : chat.chatName}
                 </Text>
                 {chat.latestMessage && (
